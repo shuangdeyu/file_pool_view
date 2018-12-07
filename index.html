@@ -5,17 +5,18 @@
     <title>Title</title>
 
     <script type="text/javascript" src="static/js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="static/js/url.js"></script>
+    <script type="text/javascript" src="static/js/common.js"></script>
     <script>
         // 判断是否登录
         $.ajax({
             type: "post",
-            url: GetUserInfo,
+            url: AppUrl,
             dataType: "json",
-            data: {},
+            data: {
+                action: 100,
+            },
             success: function (res) {
                 console.log(res);
-
             }
         });
         // window.location = "login.html";
