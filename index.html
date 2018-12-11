@@ -8,6 +8,10 @@
     <script type="text/javascript" src="static/js/common.js"></script>
     <script>
         // 判断是否登录
+        now = now_time();
+        token = get_token();
+        encrypt = get_encrypt(103, now);
+
         $.ajax({
             type: "post",
             url: AppUrl,
