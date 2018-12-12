@@ -5,7 +5,8 @@ const EncryptUrl = BaseUrl + "get_encrypt";         // 获取encrypt
 const SignUrl = BaseUrl + "get_sign";               // 获取sign
 const EncryptParamUrl = BaseUrl + "encrypt_param"; // 加密参数
 
-const RES_SUCCESS = 0;
+const RES_SUCCESS = 0; // 成功
+const RES_UN_LOGIN = 100005; // 未登录
 
 // 获取当前时间戳
 function now_time() {
@@ -61,4 +62,64 @@ function get_encrypt(action, timestamp) {
         },
     });
     return encrypt
+}
+
+/*
+ * 获取sing
+ */
+function get_singn(param) {
+    let sign = "";
+    $.ajax({
+        type: "post",
+        url: SignUrl,
+        dataType: "json",
+        async: false,
+        data: {
+            param: param,
+        },
+        success: function (res) {
+            if (res["e"] == RES_SUCCESS) {
+                sign = res["data"];
+            }
+        },
+    });
+    return sign
+}
+
+/*
+ * 加密参数
+ */
+function encrypt_param(action, param) {
+    let timestamp = now_time();
+    // 获取token
+    let token = get_token();
+    // 获取encrypt
+    let encrypt = get_encrypt(action, timestamp);
+    // 获取sing
+    param += "&timestamp=" + timestamp;
+    let sign = get_singn(param);
+    // 加密参数
+    param += "&sign=" + sign;
+    let en_param = "";
+    $.ajax({
+        type: "post",
+        url: EncryptParamUrl,
+        dataType: "json",
+        async: false,
+        data: {
+            param: param,
+        },
+        success: function (res) {
+            if (res["e"] == RES_SUCCESS) {
+                en_param = res["data"];
+            }
+        },
+    });
+
+    return {
+        "token": token,
+        "encrypt": encrypt,
+        "sign": sign,
+        "param": en_param,
+    };
 }
