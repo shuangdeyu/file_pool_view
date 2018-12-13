@@ -7849,7 +7849,7 @@ tbody.collapse.in {
   pointer-events: auto;
   background-color: #353535;
   background-color: rgba(0, 0, 0, .8);
-  border-radius: 20px;
+  border-radius: 5px;
   }
 .messager-content {
   display: table-cell;
