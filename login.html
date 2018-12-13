@@ -19,6 +19,14 @@
             display: flex;
             justify-content: center;
             align-items: Center;
+            border-bottom: 1px solid #d9e0e5;
+            background-color: #292525;
+            color: #ffffff;
+        }
+
+        .login-head a {
+            color: #d1cdcd;
+            text-decoration: none;
         }
 
         .login-head img {
@@ -30,11 +38,12 @@
         .login-body {
             /*height: 65rem;*/
             /*background-color: #448099;*/
+            text-align: center;
         }
 
         .login-body .login-card {
             width: 420px;
-            margin: 100px auto 0 -17px;
+            margin: 100px auto 0;
             padding: 40px 40px 40px;
             background-color: #fff;
             border-radius: 4px;
@@ -61,19 +70,9 @@
         }
 
         .login-card-btn {
-            margin: 35px 0;
+            margin: 40px 0;
         }
 
-        /*.login-card-btn .btn {*/
-        /*color: #fff;*/
-        /*text-shadow: 0 -1px 0 rgba(0, 0, 0, .2);*/
-        /*background-color: #757db2;*/
-        /*border-color: #757db2;*/
-        /*}*/
-
-        /*.login-card-btn .btn:hover {*/
-        /*text-shadow: 1px 2px 10px rgba(0, 0, 0, .6);*/
-        /*}*/
         .login-card-other a {
             color: #757db2;
             margin-left: 10px;
@@ -92,29 +91,30 @@
             <img src="static/images/logo.png">
         </div>
         <div class="col-md-8">
-            <strong style="font-size: 1.55rem">这是一个基于markdown的文档协同管理平台</strong>
+            <span style="font-size: 1.55rem">这是一个基于markdown的文档协同管理平台</span>
         </div>
         <div class="col-md-2">
             <a href="#">随便逛逛</a>
         </div>
     </div>
     <div class="row login-body">
-        <div class="col-md-4 col-md-offset-4">
+        <div class="col-md-12">
             <div class="login-card">
                 <div class="login-card-name">
                     <span>jMdoc</span>
                 </div>
                 <div class="login-card-form">
-                    <input type="text" class="form-control" name="user_name" placeholder="请输入用户名">
+                    <input type="text" class="form-control user_name" placeholder="请输入用户名">
                 </div>
                 <div class="login-card-form">
-                    <input type="password" class="form-control" name="password" placeholder="密码">
+                    <input type="password" class="form-control password" placeholder="密码">
+                    <span style="float: left;margin-top: 5px;color: #d12200;display: none" class="message"></span>
                 </div>
                 <div class="login-card-btn">
-                    <button class="btn btn-block btn-danger" type="button">登录</button>
+                    <button class="btn btn-block btn-danger" type="button" id="LoginBtn">登录</button>
                 </div>
                 <div class="login-card-other row">
-                    <div class="col-md-3">
+                    <div class="col-md-3" style="text-align: left">
                         <span class="login-card-other-warn" data-toggle="modal" data-target="#Warning">声明</span>
                     </div>
                     <div class="col-md-9" style="text-align: right">
@@ -140,13 +140,13 @@
                         <span style="font-size: 14px; color: rgb(127, 127, 127); font-family: arial, helvetica, sans-serif;">该站文档以池的方式保存编辑</span>
                     </p>
                     <p style="line-height: 1.5em;">
-                        <span style="font-size: 14px; color: rgb(127, 127, 127); font-family: arial, helvetica, sans-serif;">离开池，删除池用户无法操作文档</span>
+                        <span style="font-size: 14px; color: rgb(127, 127, 127); font-family: arial, helvetica, sans-serif;">离开池，删除池后用户无法操作文档</span>
                     </p>
                     <p style="line-height: 1.5em;">
                         <span style="font-size: 14px; color: rgb(127, 127, 127); font-family: arial, helvetica, sans-serif;">重要文档强烈建议保存在私有池中</span>
                     </p>
                     <p style="line-height: 1.5em;">
-                        <span style="font-size: 14px; color: rgb(127, 127, 127); font-family: arial, helvetica, sans-serif;">该站不对此负责</span>
+                        <span style="font-size: 14px; color: rgb(127, 127, 127); font-family: arial, helvetica, sans-serif;">该站不对此丢失的文档负责</span>
                     </p>
                     <p>
                         <br/>
@@ -163,6 +163,39 @@
             type: "special",
             placement: "center",
         }).show();
+    });
+
+    // 登录
+    $("#LoginBtn").click(function () {
+        let user_name = $.trim($(".user_name").val());
+        let password = $.trim($(".password").val());
+        const message = $(".message");
+        if (user_name == "") {
+            message.html("用户名不能为空");
+            message.show();
+        } else if (password == "") {
+            message.html("密码不能为空");
+            message.show();
+        } else {
+            message.hide();
+        }
+
+        let param = "name=" + user_name + "&password=" + password;
+        let arr = encrypt_param(ACTION_LOGIN, param);
+        $.ajax({
+            type: "post",
+            url: AppUrl,
+            dataType: "json",
+            data: {
+                action: ACTION_LOGIN,
+                token: arr.token,
+                encrypt: arr.encrypt,
+                param: arr.param,
+            },
+            success: function (res) {
+                console.log(res);
+            }
+        });
     });
 </script>
 </body>

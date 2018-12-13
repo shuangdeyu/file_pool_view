@@ -1,3 +1,4 @@
+// 请求路径
 const BaseUrl = "http://192.168.111.113:6001/";     // 请求基本路径
 const AppUrl = BaseUrl + "app";                     // 入口接口
 const TokenUrl = BaseUrl + "get_token";             // 获取token
@@ -5,6 +6,13 @@ const EncryptUrl = BaseUrl + "get_encrypt";         // 获取encrypt
 const SignUrl = BaseUrl + "get_sign";               // 获取sign
 const EncryptParamUrl = BaseUrl + "encrypt_param"; // 加密参数
 
+// 接口号
+const ACTION_LOGIN = 100; // 登录 100
+const ACTION_REGISTER = 101; // 注册 101
+const ACTION_LOGIN_OUT = 102; // 退出登录 102
+const ACTION_LUSER_INFO = 103; // 用户信息 103
+
+// 状态码
 const RES_SUCCESS = 0; // 成功
 const RES_UN_LOGIN = 100005; // 未登录
 
