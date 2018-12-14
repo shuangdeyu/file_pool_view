@@ -6,8 +6,6 @@
 
     <link rel="stylesheet" href="extend/zui/css/zui.min.css">
     <script type="text/javascript" src="static/js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="extend/zui/js/zui.min.js"></script>
-    <script type="text/javascript" src="static/js/common.js"></script>
 
     <style>
         body {
@@ -157,6 +155,8 @@
     </div>
 </div>
 
+<script type="text/javascript" src="extend/zui/js/zui.min.js"></script>
+<script type="text/javascript" src="static/js/common.js"></script>
 <script>
     $('.forget-pwd').on('click', function () {
         new $.zui.Messager('暂未开通此功能', {
@@ -181,20 +181,26 @@
         }
 
         let param = "name=" + user_name + "&password=" + password;
-        let arr = encrypt_param(ACTION_LOGIN, param);
-        $.ajax({
-            type: "post",
-            url: AppUrl,
-            dataType: "json",
-            data: {
-                action: ACTION_LOGIN,
-                token: arr.token,
-                encrypt: arr.encrypt,
-                param: arr.param,
-            },
-            success: function (res) {
+        $.when(encrypt_param(ACTION_LOGIN, param)).done(function (data) {
+            $.ajax({
+                type: "post",
+                url: AppUrl,
+                dataType: "json",
+                data: {
+                    action: ACTION_LOGIN,
+                    token: data.token,
+                    encrypt: data.encrypt,
+                    param: data.param,
+                },
+            }).done(function (res) {
                 console.log(res);
-            }
+                if (res["e"] != 0) {
+                    message.html(res["msg"]);
+                    message.show();
+                } else {
+                    window.location.href = "index.html";
+                }
+            });
         });
     });
 </script>
