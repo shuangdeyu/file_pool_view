@@ -193,7 +193,6 @@
                     param: data.param,
                 },
             }).done(function (res) {
-                console.log(res);
                 if (res["e"] != 0) {
                     message.html(res["msg"]);
                     message.show();

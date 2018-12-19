@@ -6,7 +6,6 @@ if (token == "") {
 }
 // 检查服务器是否登录状态
 $.when(encrypt_param(ACTION_CHECK_TOKEN_LOGIN, "")).done(function (data) {
-    console.log(data);
     $.ajax({
         type: "post",
         url: AppUrl,
