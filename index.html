@@ -35,10 +35,10 @@
             <div class="project-nav">
                 <div class="project-nav-left">
                     <ul class="pj-page">
-                        <li><span class="pj-label-active">所有池</span></li>
-                        <li><span class="pj-label">我创建的</span></li>
-                        <li><span class="pj-label">我参与的</span></li>
-                        <li><span class="pj-label">回收站</span></li>
+                        <li><span class="pj-label-active" id="ALL">所有池</span></li>
+                        <li><span class="pj-label" id="CREATE">我创建的</span></li>
+                        <li><span class="pj-label" id="JOIN">我参与的</span></li>
+                        <li><span class="pj-label" id="TRASH">回收站</span></li>
                         <li><span style="border-left: 1px solid #bfbfbf;margin-left: 5px;"></span></li>
                     </ul>
                     <ul class="pj-nav">
@@ -47,12 +47,45 @@
                 </div>
                 <div class="project-nav-right">
                     <div class="input-control search-box search-box-circle has-icon-left has-icon-right" id="searchBox">
-                        <input id="inputSearch" type="search" class="form-control search-input" placeholder="搜索">
+                        <input id="inputSearch" type="search" class="form-control search-input" placeholder="搜索"
+                               value="">
                         <label for="inputSearch" class="input-control-icon-left search-icon">
                             <i class="icon icon-search"></i>
                         </label>
                     </div>
                 </div>
+            </div>
+
+            <div class="project-list">
+                <div class="pj-card">
+                    <a href="#">
+                        <div><img src="./static/images/folder.png"></div>
+                        <div><span>读书笔记</span></div>
+                    </a>
+                    <div class="pj-card-opt">
+                        <i class="icon icon-trash opt-delete"></i>
+                    </div>
+                </div>
+
+                <div class="pj-card"></div>
+                <div class="pj-card"></div>
+                <div class="pj-card"></div>
+                <div class="pj-card"></div>
+                <div class="pj-card"></div>
+                <div class="pj-card"></div>
+                <div class="pj-card"></div>
+                <div class="pj-card"></div>
+                <div class="pj-card"></div>
+                <div class="pj-card"></div>
+                <div class="pj-card"></div>
+                <div class="pj-card"></div>
+                <div class="pj-card"></div>
+                <div class="pj-card"></div>
+                <div class="pj-card"></div>
+            </div>
+
+            <div class="page-tab" id="pageTab">
+                <!--<ul class="pager pager-loose pager-pills" id="pjPage" data-ride="pager"></ul>-->
             </div>
         </div>
     </div>
@@ -63,7 +96,84 @@
 <script type="text/javascript" src="static/js/common.js"></script>
 <script type="text/javascript" src="static/js/judge_login.js"></script>
 <script>
+    // 当前页
+    let page = getQueryString("page");
+    if (!(page > 0)) {
+        page = 1;
+    }
 
+    // 初始化
+    let pool_type = $(".pj-label-active").attr("id"); // 选择的池类型
+    $(function () {
+        let search = $("#inputSearch").val();
+        getPoolList(pool_type, search, page, LIMIT_POOL_LIST);
+    });
+
+    // 设置分页样式
+    function setPageStyle(now_page, total) {
+        $('#pjPage').pager({
+            page: parseInt(now_page),
+            recTotal: parseInt(total),
+            recPerPage: LIMIT_POOL_LIST,
+            elements: [
+                'prev_icon', 'nav', 'next_icon', 'total_text',
+            ],
+            // linkCreator: function (page) {
+            //     return 'index.html?page=' + page;
+            // },
+        });
+    }
+
+    // 搜索事件
+    $("#inputSearch").keydown(function () {
+        if (event.keyCode === 13) {
+            let search = $("#inputSearch").val();
+            getPoolList(pool_type, search, page, LIMIT_POOL_LIST);
+        }
+    });
+
+    // 换页事件
+    $(".pager-item").click(function () {
+        let myPager = $('#pjPage').data('zui.pager');
+        let pageState = myPager.state;
+        console.log('当前页记录数目为', pageState.pageRecCount);
+    });
+
+    // 获取池列表
+    function getPoolList(type, search, page, limit) {
+        let offset = (page - 1) * limit;
+        let param = "search=" + search + "&offset=" + offset + "&limit=" + limit + "&type=" + type;
+        $.when(encrypt_param(ACTION_User_Pool_List, param)).done(function (data) {
+            $.ajax({
+                type: "post",
+                url: AppUrl,
+                dataType: "json",
+                async: true,
+                data: {
+                    action: ACTION_User_Pool_List,
+                    token: data.token,
+                    encrypt: data.encrypt,
+                    param: data.param,
+                },
+            }).done(function (res) {
+                if (res["e"] == 0) {
+                    console.log(res);
+                    data = res["data"];
+                    // 填充内容
+
+
+                    // 设置分页器
+                    let pageTab = $("#pageTab");
+                    pageTab.empty();
+                    pageTab.html("<ul class='pager pager-loose pager-pills' id='pjPage' data-ride='pager'></ul>");
+                    setPageStyle(page, data["count"]);
+                } else {
+                    login_code(res["e"]);
+                    show_msg(res["msg"], "danger", "exclamation-sign");
+                }
+            });
+        });
+    }
 </script>
 </body>
 </html>

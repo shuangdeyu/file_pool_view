@@ -2,7 +2,6 @@ html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pr
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 100%;
     vertical-align: baseline;
 }
 
@@ -61,21 +60,9 @@ body {
     padding: 0;
     width: auto;
 }
-
-.header-nav li {
-    margin-right: 10px;
-}
-
-.header-nav li a {
-    /*color: #7b7b7b;*/
-    color: #3c3c3c;
-    text-decoration: none;
-}
-
-.header-nav .active a {
-    color: #000000;
-    font-weight: bold;
-}
+.header-nav li { margin-right: 10px; }
+.header-nav li a { color: #3c3c3c; text-decoration: none; }
+.header-nav .active a { color: #000000; font-weight: bold; }
 
 .header-user {
     position: absolute;
@@ -89,23 +76,10 @@ body {
     align-items: center;
 }
 
-.header-user-notify {
-    margin: 0 20px 0;
-    transition: transform 0.2s ease-out;
-}
-
-.header-user-notify:hover {
-    transform: rotateZ(45deg);
-}
-
-.header-user-notify a {
-    /*color: #565656;*/
-    color: #3c3c3c;
-}
-
-.header-user-notify .icon {
-    font-size: 16px;
-}
+.header-user-notify { margin: 0 20px 0; transition: transform 0.2s ease-out; }
+.header-user-notify:hover { transform: rotateZ(45deg); }
+.header-user-notify a { color: #3c3c3c; }
+.header-user-notify .icon { font-size: 16px; }
 
 .header-user-avatar {
     margin-top: 2px;
@@ -120,7 +94,6 @@ body {
     -ms-transition: -ms-transform 0.5s ease-out;
     transition: transform 0.5s ease-out;
 }
-
 .header-user-avatar:hover {
     -webkit-transform: rotateZ(360deg);
     -moz-transform: rotateZ(360deg);
@@ -128,16 +101,11 @@ body {
     -ms-transform: rotateZ(360deg);
     transform: rotateZ(360deg);
 }
-
-.header-user-avatar img {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-}
+.header-user-avatar img { width: 35px; height: 35px; border-radius: 50%; }
 
 /* 容器体样式 */
 .body {
     width: 962px;
-    margin: 5px auto;
+    margin: 5px auto 70px;
     height: auto;
 }

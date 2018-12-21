@@ -10,8 +10,12 @@ const EncryptParamUrl = BaseUrl + "encrypt_param"; // 加密参数
 const ACTION_LOGIN = 100; // 登录 100
 const ACTION_REGISTER = 101; // 注册 101
 const ACTION_LOGIN_OUT = 102; // 退出登录 102
-const ACTION_LUSER_INFO = 103; // 用户信息 103
+const ACTION_USER_INFO = 103; // 用户信息 103
+const ACTION_User_Pool_List = 150; // 获取用户池列表 150
 const ACTION_CHECK_TOKEN_LOGIN = 400; // 检查客户端登录状态 400
+
+// 每页记录数设置
+const LIMIT_POOL_LIST = 1;
 
 // 状态码
 const RES_SUCCESS = 0; // 成功
@@ -151,4 +155,17 @@ function getQueryString(name) {
     let r = window.location.search.substr(1).match(reg);
     if (r != null) return unescape(r[2]);
     return '';
+}
+
+/**
+ * 展示错误信息
+ */
+function show_msg(msg, type = "default", icon = "") {
+    if (type == "") {
+        type = "default"
+    }
+    new $.zui.Messager(msg, {
+        type: type,
+        icon: icon,
+    }).show();
 }
